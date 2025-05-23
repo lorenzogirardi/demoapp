@@ -1,0 +1,1 @@
+**Gucci Digital - Platform Engineering test app**
