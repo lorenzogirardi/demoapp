@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 
 interface AddToCartButtonProps {
   productId: string;
 }
 
-export default function AddToCartButton({
-  productId,
-}: AddToCartButtonProps) {
+export default function AddToCartButton({ productId }: AddToCartButtonProps) {
+  const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState(false);
 
   return (
@@ -16,8 +15,12 @@ export default function AddToCartButton({
       <button
         className="btn btn-primary"
         onClick={() => {
-          setSuccess(true);
-          setTimeout(() => setSuccess(false), 2000);
+          setSuccess(false);
+          startTransition(async () => {
+            // Mock adding to cart
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            setSuccess(true);
+          });
         }}
       >
         Add to Cart
@@ -36,8 +39,9 @@ export default function AddToCartButton({
           />
         </svg>
       </button>
-      {success && (
-        <span className="text-success">Added to Cart.</span>
+      {isPending && <span className="loading loading-spinner loading-md" />}
+      {!isPending && success && (
+        <span className="text-success">Added to cart!</span>
       )}
     </div>
   );
