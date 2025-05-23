@@ -2,7 +2,7 @@
 export const authOptions = {
   providers: [],
   callbacks: {
-    session: async ({ session }) => {
+    session: async ({ session }: { session: any }) => {
       // Return a mock session with a user ID
       return {
         ...session,
